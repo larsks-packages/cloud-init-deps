@@ -1,0 +1,27 @@
+From b27bb1bcb0606336af714a58e15fcf25b3a657d5 Mon Sep 17 00:00:00 2001
+From: Lars Kellogg-Stedman <lars@redhat.com>
+Date: Wed, 1 Jun 2016 12:24:32 -0400
+Subject: [PATCH] fix partx invocation
+
+prevent errors with recent versions (2.28) versions of partx (still
+works with earlier versions as well).
+---
+ bin/growpart | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/bin/growpart b/bin/growpart
+index 14f083b..13eda6e 100755
+--- a/bin/growpart
++++ b/bin/growpart
+@@ -624,7 +624,7 @@ pt_update() {
+ 	fi
+ 	# partx only works on block devices (do not run on file)
+ 	[ -b "$dev" ] || return 0
+-	partx --update "$part" "$dev"
++	partx --update --nr "$part" "$dev"
+ }
+ 
+ has_cmd() {
+-- 
+2.8.1
+
