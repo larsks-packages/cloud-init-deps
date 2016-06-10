@@ -2,7 +2,7 @@
 %global jsonpatch_version 1.12
 %global jsonpointer_version 1.10
 %global prettytable_version 0.7.2
-%global cloud_utils_version 0.28
+%global cloud_utils_version 0.29
 
 Name: cloud-init-deps
 Version: 20160520
@@ -15,8 +15,6 @@ Source1: https://pypi.io/packages/source/j/jsonpatch/jsonpatch-%{jsonpatch_versi
 Source2: https://pypi.io/packages/source/p/pyserial/pyserial-%{pyserial_version}.tar.gz
 Source3: https://pypi.io/packages/source/p/prettytable/prettytable-%{prettytable_version}.tar.gz
 Source4: https://launchpad.net/cloud-utils/trunk/%{cloud_utils_version}/+download/cloud-utils-%{cloud_utils_version}.tar.gz
-
-Patch100: 0001-fix-partx-invocation.patch
 
 Buildrequires: python
 Buildrequires: python-setuptools
@@ -33,12 +31,6 @@ Provides: cloud-utils-growpart == %{cloud_utils_version}
 
 %prep
 %setup -q -c -T -b0 -b1 -b2 -b3 -b4
-
-(
-cd cloud-utils-%{cloud_utils_version}
-%patch100 -p1
-)
-
 
 %build
 
