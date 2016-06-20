@@ -6,7 +6,7 @@
 
 Name: cloud-init-deps
 Version: 20160520
-Release: 2
+Release: 3
 Summary: Dependencies for cloud-init
 License: BSD and GPLv3
 
@@ -58,7 +58,8 @@ python setup.py build
 
 (
 cd jsonpatch-%{jsonpatch_version}
-python setup.py install --root $RPM_BUILD_ROOT
+python setup.py install --root $RPM_BUILD_ROOT --install-purelib %{python_sitelib}/cloud-init-deps
+rm $RPM_BUILD_ROOT%{_bindir}/* || true
 for doc in AUTHORS README.md COPYING; do
 mv $doc $doc.jsonpatch
 done
@@ -66,7 +67,8 @@ done
 
 (
 cd jsonpointer-%{jsonpointer_version}
-python setup.py install --root $RPM_BUILD_ROOT
+python setup.py install --root $RPM_BUILD_ROOT --install-purelib %{python_sitelib}/cloud-init-deps
+rm $RPM_BUILD_ROOT%{_bindir}/* || true
 for doc in AUTHORS README.md COPYING; do
 mv $doc $doc.jsonpointer
 done
@@ -74,7 +76,8 @@ done
 
 (
 cd prettytable-%{prettytable_version}
-python setup.py install --root $RPM_BUILD_ROOT
+python setup.py install --root $RPM_BUILD_ROOT --install-purelib %{python_sitelib}/cloud-init-deps
+rm $RPM_BUILD_ROOT%{_bindir}/* || true
 for doc in README COPYING; do
 mv $doc $doc.prettytable
 done
@@ -82,7 +85,8 @@ done
 
 (
 cd pyserial-%{pyserial_version}
-python setup.py install --root $RPM_BUILD_ROOT
+python setup.py install --root $RPM_BUILD_ROOT --install-purelib %{python_sitelib}/cloud-init-deps
+rm $RPM_BUILD_ROOT%{_bindir}/* || true
 for doc in README.rst LICENSE.txt; do
 mv $doc $doc.pyserial
 done
@@ -94,6 +98,10 @@ install -m 755 -d $RPM_BUILD_ROOT%{_bindir} $RPM_BUILD_ROOT%{_mandir}/man1
 install -m 755 bin/growpart $RPM_BUILD_ROOT%{_bindir}/growpart
 install -m 644 man/growpart.1 $RPM_BUILD_ROOT%{_mandir}/man1/growpart.1
 )
+
+cat > $RPM_BUILD_ROOT%{python_sitelib}/cloud-init-deps.pth <<EOF
+cloud-init-deps
+EOF
 
 %files
 
@@ -111,24 +119,20 @@ install -m 644 man/growpart.1 $RPM_BUILD_ROOT%{_mandir}/man1/growpart.1
 %doc pyserial-%{pyserial_version}/README.rst.pyserial
 %doc pyserial-%{pyserial_version}/LICENSE.txt.pyserial
 
-%{python_sitelib}/serial
-%dir %{python_sitelib}/serial
-%{python_sitelib}/pyserial*egg-info
-%{python_sitelib}/jsonpatch.py*
-%{python_sitelib}/jsonpatch*egg-info
-%{python_sitelib}/jsonpointer.py*
-%{python_sitelib}/jsonpointer*egg-info
-%{python_sitelib}/prettytable.py*
-%{python_sitelib}/prettytable*egg-info
+%{python_sitelib}/cloud-init-deps/serial
+%{python_sitelib}/cloud-init-deps/pyserial*egg-info
+%{python_sitelib}/cloud-init-deps/jsonpatch.py*
+%{python_sitelib}/cloud-init-deps/jsonpatch*egg-info
+%{python_sitelib}/cloud-init-deps/jsonpointer.py*
+%{python_sitelib}/cloud-init-deps/jsonpointer*egg-info
+%{python_sitelib}/cloud-init-deps/prettytable.py*
+%{python_sitelib}/cloud-init-deps/prettytable*egg-info
 
-%{_bindir}/jsondiff
-%{_bindir}/jsonpatch
-%{_bindir}/jsonpointer
-%{_bindir}/miniterm.py
+%{python_sitelib}/cloud-init-deps.pth
 
 %{_bindir}/growpart
 %{_mandir}/man1/growpart.1*
 
 %changelog
-* Mon Jun 20 2016 Lars Kellogg-Stedman <lars@redhat.com> - 20160520-2
+* Mon Jun 20 2016 Lars Kellogg-Stedman <lars@redhat.com> - 20160520-3
 - initial cloud-init-deps package
