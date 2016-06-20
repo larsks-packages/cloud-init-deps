@@ -6,9 +6,9 @@
 
 Name: cloud-init-deps
 Version: 20160520
-Release: 1
+Release: 2
 Summary: Dependencies for cloud-init
-License: various
+License: BSD and GPLv3
 
 Source0: https://pypi.io/packages/source/j/jsonpointer/jsonpointer-%{jsonpointer_version}.tar.gz
 Source1: https://pypi.io/packages/source/j/jsonpatch/jsonpatch-%{jsonpatch_version}.tar.gz
@@ -20,11 +20,11 @@ Buildrequires: python
 Buildrequires: python-setuptools
 Buildarch: noarch
 
-Provides: python-jsonpointer == %{jsonpointer_version}
-Provides: python-jsonpatch == %{jsonpatch_version}
-Provides: python-prettytable == %{prettytable_version}
-Provides: pyserial == %{pyserial_version}
-Provides: cloud-utils-growpart == %{cloud_utils_version}
+Provides: bundled(python-jsonpointer) == %{jsonpointer_version}
+Provides: bundled(python-jsonpatch) == %{jsonpatch_version}
+Provides: bundled(python-prettytable) == %{prettytable_version}
+Provides: bundled(pyserial) == %{pyserial_version}
+Provides: bundled(cloud-utils-growpart) == %{cloud_utils_version}
 
 %description
 %{summary}
@@ -128,3 +128,7 @@ install -m 644 man/growpart.1 $RPM_BUILD_ROOT%{_mandir}/man1/growpart.1
 
 %{_bindir}/growpart
 %{_mandir}/man1/growpart.1*
+
+%changelog
+* Mon Jun 20 2016 Lars Kellogg-Stedman <lars@redhat.com> - 20160520-2
+- initial cloud-init-deps package
